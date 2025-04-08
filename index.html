@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Color Blindness Simulator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f7f7f7;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    input, button, select {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .preview img {
+      margin: 20px auto;
+      max-height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .results {
+      margin-top: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .img-container {
+      background-color: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 250px;
+    }
+
+    .img-container img {
+      max-width: 100%;
+      border-radius: 6px;
+    }
+
+    .img-container span {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    #resultsWrapper {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Color Blindness Simulator</h1>
+
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="uploadAndGenerate()">Generate</button>
+
+  <div class="preview">
+    <h3>Preview</h3>
+    <img id="previewImage" src="#" style="display:none;">
+  </div>
+
+  <div id="selector" style="display:none;">
+    <h3>Select Output Type</h3>
+    <select id="imageSelect" onchange="showSelectedImage()">
+      <option disabled selected>Choose a type</option>
+    </select>
+  </div>
+
+  <div id="resultsWrapper">
+    <div id="results" class="results"></div>
+  </div>
+
+  <script>
+    let selectedFile;
+    let outputMap = {};
+
+    document.getElementById('imageInput').addEventListener('change', (event) => {
+      selectedFile = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = document.getElementById('previewImage');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(selectedFile);
+    });
+
+    function getLabel(filename) {
+      if (filename.includes("simulate_protanopia")) return "Simulated Protanopia";
+      if (filename.includes("simulate_deutranopia")) return "Simulated Deutranopia";
+      if (filename.includes("simulate_tritanopia")) return "Simulated Tritanopia";
+      if (filename.includes("simulate_hybrid")) return "Simulated Hybrid";
+      if (filename.includes("corrected_protanopia")) return "Corrected Protanopia";
+      if (filename.includes("simulate_corrected_protanopia")) return "Simulated (Corrected Protanopia)";
+      if (filename.includes("corrected_deutranopia")) return "Corrected Deutranopia";
+      if (filename.includes("simulate_corrected_deutranopia")) return "Simulated (Corrected Deutranopia)";
+      if (filename.includes("corrected_hybrid")) return "Corrected Hybrid";
+      return filename;
+    }
+
+    function uploadAndGenerate() {
+      if (!selectedFile) {
+        alert("Please select an image.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", selectedFile);
+
+      fetch("/generate", {
+        method: "POST",
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        const select = document.getElementById("imageSelect");
+        select.innerHTML = `<option disabled selected>Choose a type</option>`;
+
+        outputMap = {};
+        data.output_images.forEach(filename => {
+          const label = getLabel(filename);
+          outputMap[label] = "/output/" + filename;
+
+          const option = document.createElement("option");
+          option.value = label;
+          option.textContent = label;
+          select.appendChild(option);
+        });
+
+        // Add 'ALL' option
+        const allOption = document.createElement("option");
+        allOption.value = "ALL";
+        allOption.textContent = "ALL";
+        select.appendChild(allOption);
+
+        document.getElementById("selector").style.display = "block";
+        document.getElementById("resultsWrapper").style.display = "none";
+        document.getElementById("results").innerHTML = "";
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Error generating images.");
+      });
+    }
+
+    function showSelectedImage() {
+      const selected = document.getElementById("imageSelect").value;
+      const resultsContainer = document.getElementById("results");
+      resultsContainer.innerHTML = "";
+      document.getElementById("resultsWrapper").style.display = "block";
+
+      if (selected === "ALL") {
+        for (let label in outputMap) {
+          const container = createImageContainer(outputMap[label], label);
+          resultsContainer.appendChild(container);
+        }
+      } else {
+        const container = createImageContainer(outputMap[selected], selected);
+        resultsContainer.appendChild(container);
+      }
+    }
+
+    function createImageContainer(src, label) {
+      const container = document.createElement("div");
+      container.classList.add("img-container");
+
+      const img = document.createElement("img");
+      img.src = src;
+
+      const labelElem = document.createElement("span");
+      labelElem.textContent = label;
+
+      container.appendChild(img);
+      container.appendChild(labelElem);
+
+      return container;
+    }
+  </script>
+
+</body>
+</html>
