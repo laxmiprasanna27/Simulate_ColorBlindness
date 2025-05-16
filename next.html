@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Vision Checker</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fefefe);
+      margin: 0;
+      padding: 0;
+      color: #2c3e50;
+    }
+
+    header {
+      background: linear-gradient(90deg, #007acc, #00c6ff);
+      padding: 35px 20px;
+      text-align: center;
+      color: white;
+      font-size: 32px;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 36px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      color: #26a69a;
+    }
+
+    .intro-section, .info-section {
+      max-width: 1000px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 16px;
+      padding: 30px 35px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .intro-section h1 {
+      font-size: 28px;
+      color: #00897B;
+      margin-bottom: 10px;
+    }
+
+    .intro-section p, .info-section p {
+      font-size: 18px;
+      color: #555;
+    }
+
+    .info-section h2 {
+      color: #00897B;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .test-item {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+      padding: 20px 16px;
+      transition: transform 0.2s ease-in-out;
+      text-align: center;
+    }
+
+    .test-item:hover {
+      transform: translateY(-4px);
+    }
+
+    .test-item p {
+      margin: 10px 0;
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .test-item img {
+      width: 100%;
+      max-width: 200px;
+      height: auto;
+      border-radius: 12px;
+      border: 2px solid #eee;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    input[type="text"] {
+      padding: 10px 12px;
+      font-size: 16px;
+      margin-top: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      width: 80px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #26a69a;
+      outline: none;
+      box-shadow: 0 0 5px rgba(38, 166, 154, 0.4);
+    }
+
+    button {
+      display: block;
+      margin: 40px auto 0;
+      padding: 16px 32px;
+      background-color: #26a69a;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1e857e;
+    }
+
+    .result {
+      margin-top: 35px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      color: #2e7d32;
+      white-space: pre-line;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 24px;
+        padding: 25px 10px;
+      }
+
+      .intro-section, .info-section {
+        padding: 20px 15px;
+      }
+
+      input[type="text"] {
+        width: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    👁️ Color Vision Checker
+    <a href="index.html" class="back-arrow">&#8592;</a>
+  </header>
+
+  <div class="intro-section">
+    <h1>Welcome to the Color Blindness Test</h1>
+    <p>
+      This website helps you identify potential types of color blindness through a set of Ishihara plates — a widely used method to test color vision.
+      Simply look at each image and type the number you see. At the end, click "Check Result" to know more about your color vision.
+    </p>
+  </div>
+
+  <div class="info-section">
+    <h2>Understanding Types of Color Blindness</h2>
+    <p>
+      <strong>🔴 Protanopia:</strong> A red-green color vision deficiency caused by missing or non-functional red cones. Red colors may appear dark or even black.<br><br>
+      <strong>🟢 Deuteranopia:</strong> Another red-green deficiency caused by missing green cones. Green colors may be confused with red or yellow.<br><br>
+      <strong>🔵 Tritanopia:</strong> A blue-yellow color deficiency caused by missing blue cones. Individuals often struggle to differentiate between blue and green or yellow and pink.<br><br>
+      <strong>🌀 Hybrid Color Blindness:</strong> This refers to symptoms involving more than one type of color blindness, which may lead to broader difficulties distinguishing colors.
+    </p>
+  </div>
+
+  <div class="container">
+    <div class="grid">
+      <!-- 12 test items -->
+      <div class="test-item">
+        <p>1. What number do you see?</p>
+        <img src="b6.jpg" alt="Ishihara Plate 1"/>
+        <br />
+        <input type="text" id="ans1" />
+      </div>
+
+      <div class="test-item">
+        <p>2. What number do you see?</p>
+        <img src="g16.png" alt="Ishihara Plate 2"/>
+        <br />
+        <input type="text" id="ans2" />
+      </div>
+
+      <div class="test-item">
+        <p>3. What number do you see?</p>
+        <img src="grey26.png" alt="Ishihara Plate 3"/>
+        <br />
+        <input type="text" id="ans3" />
+      </div>
+
+      <div class="test-item">
+        <p>4. What number do you see?</p>
+        <img src="p29.png" alt="Ishihara Plate 4"/>
+        <br />
+        <input type="text" id="ans4" />
+      </div>
+
+      <div class="test-item">
+        <p>5. What number do you see?</p>
+        <img src="g7.png" alt="Ishihara Plate 5"/>
+        <br />
+        <input type="text" id="ans5" />
+      </div>
+
+      <div class="test-item">
+        <p>6. What number do you see?</p>
+        <img src="g73.png" alt="Ishihara Plate 6"/>
+        <br />
+        <input type="text" id="ans6" />
+      </div>
+
+      <div class="test-item">
+        <p>7. What number do you see?</p>
+        <img src="r8.png" alt="Ishihara Plate 7"/>
+        <br />
+        <input type="text" id="ans7" />
+      </div>
+
+      <div class="test-item">
+        <p>8. What number do you see?</p>
+        <img src="b7.png" alt="Ishihara Plate 8"/>
+        <br />
+        <input type="text" id="ans8" />
+      </div>
+
+      <div class="test-item">
+        <p>9. What number do you see?</p>
+        <img src="r6.png" alt="Ishihara Plate 9"/>
+        <br />
+        <input type="text" id="ans9" />
+      </div>
+
+      <div class="test-item">
+        <p>10. What number do you see?</p>
+        <img src="r16.png" alt="Ishihara Plate 10"/>
+        <br />
+        <input type="text" id="ans10" />
+      </div>
+
+      <div class="test-item">
+        <p>11. What number do you see?</p>
+        <img src="g74.png" alt="Ishihara Plate 11"/>
+        <br />
+        <input type="text" id="ans11" />
+      </div>
+
+      <div class="test-item">
+        <p>12. What number do you see?</p>
+        <img src="r45.png" alt="Ishihara Plate 12"/>
+        <br />
+        <input type="text" id="ans12" />
+      </div>
+    </div>
+
+    <button onclick="checkAnswers()">Check Result</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function checkAnswers() {
+      const answers = [
+        { id: 'ans1', correct: '6' },
+        { id: 'ans2', correct: '16' },
+        { id: 'ans3', correct: '26' },
+        { id: 'ans4', correct: '29' },
+        { id: 'ans5', correct: '7' },
+        { id: 'ans6', correct: '73' },
+        { id: 'ans7', correct: '8' },
+        { id: 'ans8', correct: '7' },
+        { id: 'ans9', correct: '6' },
+        { id: 'ans10', correct: '16' },
+        { id: 'ans11', correct: '74' },
+        { id: 'ans12', correct: '45' },
+      ];
+
+      let tritanopiaCount = 0;
+      let protanopiaCount = 0;
+      let deuteranopiaCount = 0;
+
+      answers.forEach((item, index) => {
+        const userAnswer = document.getElementById(item.id).value.trim();
+        const isCorrect = userAnswer === item.correct;
+
+        if (!isCorrect) {
+          if ([0, 7].includes(index)) tritanopiaCount++;
+          if ([3, 6, 8, 11].includes(index)) protanopiaCount++;
+          if ([1, 4, 5, 9, 10].includes(index)) deuteranopiaCount++;
+        }
+      });
+
+      const affectedTypes = [tritanopiaCount > 0, protanopiaCount > 0, deuteranopiaCount > 0].filter(Boolean).length;
+
+      let result = '';
+      if (affectedTypes > 1) {
+        result = '❗ Your responses suggest possible **hybrid color blindness** involving multiple types.';
+      } else if (tritanopiaCount > 0) {
+        result = '👁️ Your answers suggest you may have **tritanopia** (blue-yellow color blindness).';
+      } else if (protanopiaCount > 0) {
+        result = '👁️ Your answers suggest you may have **protanopia** (red-green color blindness).';
+      } else if (deuteranopiaCount > 0) {
+        result = '👁️ Your answers suggest you may have **deuteranopia** (green color blindness).';
+      } else {
+        result = '🎉 Your responses suggest you have normal color vision.';
+      }
+
+      document.getElementById('result').textContent = result;
+    }
+  </script>
+</body>
+</html>

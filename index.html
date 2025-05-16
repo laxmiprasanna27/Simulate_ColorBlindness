@@ -1,63 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Color Blindness Simulator</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Blindness Enhancer</title>
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f7f7f7;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f3f7fa, #fff0f5);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(90deg, #4CAF50, #2196F3);
+      color: white;
+      padding: 20px;
       text-align: center;
-      padding: 40px;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header .test-link {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px;
     }
 
     h1 {
-      color: #333;
-      margin-bottom: 30px;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
-    input, button, select {
-      padding: 12px 20px;
+    .description {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 40px;
+      color: #555;
+    }
+
+    .message {
+      text-align: center;
       font-size: 16px;
-      margin: 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      outline: none;
+      margin-bottom: 20px;
+      height: 24px;
+    }
+
+    .input-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 20px;
+    }
+
+    .input-box {
+      flex: 1 1 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .input-box h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: #444;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 15px auto;
+    }
+
+    video {
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .generate-box {
+      flex: 1 1 100%;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 30px 0;
     }
 
     button {
       background-color: #4CAF50;
       color: white;
-      cursor: pointer;
+      padding: 12px 18px;
+      font-size: 16px;
       border: none;
-      transition: background 0.3s;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
     }
 
-    button:hover {
-      background-color: #45a049;
+    .preview, .selector, .results {
+      text-align: center;
+      margin-top: 40px;
     }
 
     .preview img {
-      margin: 20px auto;
       max-height: 300px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: block;
+      margin: 20px auto;
+    }
+
+    select {
+      padding: 12px 18px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
     }
 
     .results {
-      margin-top: 30px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 30px;
+      margin-top: 30px;
     }
 
     .img-container {
       background-color: white;
       padding: 15px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       width: 250px;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .img-container img {
@@ -72,67 +166,149 @@
       color: #555;
     }
 
-    #resultsWrapper {
-      display: none;
+    footer {
+      background-color: #222;
+      color: #bbb;
+      text-align: center;
+      padding: 20px;
+      margin-top: 60px;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .input-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      .generate-box {
+        margin: 20px 0;
+      }
+      .results {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Color Blindness Simulator</h1>
+  <header>
+    🎨 Color Blindness Enhancer
+    <a href="next.html" target="_blank" class="test-link">Test</a>
+  </header>
 
-  <input type="file" id="imageInput" accept="image/*">
-  <button onclick="uploadAndGenerate()">Generate</button>
+  <div class="container">
+    <h1>Enhance Color Vision</h1>
+    <p class="description">Upload or capture an image to enhance visibility for different types of color blindness.</p>
 
-  <div class="preview">
-    <h3>Preview</h3>
-    <img id="previewImage" src="#" style="display:none;">
+    <div class="message" id="message"></div>
+
+    <div class="input-section">
+      <div class="input-box">
+        <h2>📁 Upload an Image</h2>
+        <input type="file" id="imageInput" accept="image/*">
+      </div>
+
+      <div class="input-box">
+        <h2>📷 Capture from Camera</h2>
+        <video id="video" width="300" height="220" autoplay playsinline></video><br>
+        <button onclick="captureImage()">📸 Capture</button>
+      </div>
+
+      <div class="generate-box">
+        <button id="generateBtn" onclick="uploadAndGenerate()">🚀 Generate</button>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="320" height="240" style="display: none;"></canvas>
+
+    <div class="preview">
+      <h2>🖼️ Preview</h2>
+      <img id="previewImage" src="#" style="display: none;" />
+    </div>
+
+    <div class="selector" id="selector" style="display: none;">
+      <h2>🎯 Select Correction Type</h2>
+      <select id="imageSelect" onchange="showSelectedImage()" title="Select a correction type">
+        <option disabled selected>Choose a type</option>
+      </select>
+    </div>
+
+    <div id="resultsWrapper" style="display: none;">
+      <div id="results" class="results"></div>
+    </div>
   </div>
 
-  <div id="selector" style="display:none;">
-    <h3>Select Output Type</h3>
-    <select id="imageSelect" onchange="showSelectedImage()">
-      <option disabled selected>Choose a type</option>
-    </select>
-  </div>
-
-  <div id="resultsWrapper">
-    <div id="results" class="results"></div>
-  </div>
+  <footer>
+    © 2025 ColorVisionX &mdash; Made with 💙 for accessibility. |
+    <a href="#">Contact</a> | <a href="#">GitHub</a>
+  </footer>
 
   <script>
     let selectedFile;
     let outputMap = {};
+    let previewImageSrc = "";
+
+    const messageBox = document.getElementById('message');
+    const previewImage = document.getElementById('previewImage');
 
     document.getElementById('imageInput').addEventListener('change', (event) => {
       selectedFile = event.target.files[0];
       const reader = new FileReader();
       reader.onload = function (e) {
-        const img = document.getElementById('previewImage');
-        img.src = e.target.result;
-        img.style.display = 'block';
+        previewImage.src = e.target.result;
+        previewImage.style.display = 'block';
+        previewImageSrc = e.target.result;
+        messageBox.textContent = '';
       };
       reader.readAsDataURL(selectedFile);
     });
 
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        document.getElementById("video").srcObject = stream;
+      })
+      .catch(err => {
+        console.warn("Camera access denied or not available.", err);
+      });
+
+    function captureImage() {
+      const video = document.getElementById("video");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      canvas.toBlob(blob => {
+        selectedFile = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
+        previewImage.src = URL.createObjectURL(selectedFile);
+        previewImage.style.display = 'block';
+        previewImageSrc = previewImage.src;
+        messageBox.textContent = '';
+      }, 'image/jpeg');
+    }
+
     function getLabel(filename) {
-      if (filename.includes("simulate_protanopia")) return "Simulated Protanopia";
-      if (filename.includes("simulate_deutranopia")) return "Simulated Deutranopia";
-      if (filename.includes("simulate_tritanopia")) return "Simulated Tritanopia";
-      if (filename.includes("simulate_hybrid")) return "Simulated Hybrid";
       if (filename.includes("corrected_protanopia")) return "Corrected Protanopia";
-      if (filename.includes("simulate_corrected_protanopia")) return "Simulated (Corrected Protanopia)";
       if (filename.includes("corrected_deutranopia")) return "Corrected Deutranopia";
-      if (filename.includes("simulate_corrected_deutranopia")) return "Simulated (Corrected Deutranopia)";
+      if (filename.includes("corrected_tritanopia")) return "Corrected Tritanopia";
       if (filename.includes("corrected_hybrid")) return "Corrected Hybrid";
       return filename;
     }
 
     function uploadAndGenerate() {
       if (!selectedFile) {
-        alert("Please select an image.");
+        messageBox.innerHTML = "<span style='color:red;'>❌ Please select or capture an image first.</span>";
         return;
       }
+
+      const generateBtn = document.getElementById("generateBtn");
+      generateBtn.textContent = "⏳ Processing...";
+      generateBtn.disabled = true;
 
       const formData = new FormData();
       formData.append("image", selectedFile);
@@ -150,26 +326,31 @@
         data.output_images.forEach(filename => {
           const label = getLabel(filename);
           outputMap[label] = "/output/" + filename;
-
-          const option = document.createElement("option");
-          option.value = label;
-          option.textContent = label;
-          select.appendChild(option);
         });
 
-        // Add 'ALL' option
-        const allOption = document.createElement("option");
-        allOption.value = "ALL";
-        allOption.textContent = "ALL";
-        select.appendChild(allOption);
+        ["Protanopia", "Deutranopia", "Tritanopia", "Hybrid"].forEach(type => {
+          const label = `Corrected ${type}`;
+          if (outputMap[label]) {
+            const option = document.createElement("option");
+            option.value = type;
+            option.textContent = type;
+            option.title = "View corrected image for " + type;
+            select.appendChild(option);
+          }
+        });
 
         document.getElementById("selector").style.display = "block";
         document.getElementById("resultsWrapper").style.display = "none";
         document.getElementById("results").innerHTML = "";
+        messageBox.innerHTML = "<span style='color:green;'>✅ Image processed successfully!</span>";
       })
       .catch(err => {
         console.error(err);
-        alert("Error generating images.");
+        messageBox.innerHTML = "<span style='color:red;'>❌ Error generating images.</span>";
+      })
+      .finally(() => {
+        generateBtn.textContent = "🚀 Generate";
+        generateBtn.disabled = false;
       });
     }
 
@@ -179,14 +360,13 @@
       resultsContainer.innerHTML = "";
       document.getElementById("resultsWrapper").style.display = "block";
 
-      if (selected === "ALL") {
-        for (let label in outputMap) {
-          const container = createImageContainer(outputMap[label], label);
-          resultsContainer.appendChild(container);
-        }
-      } else {
-        const container = createImageContainer(outputMap[selected], selected);
-        resultsContainer.appendChild(container);
+      if (previewImageSrc) {
+        resultsContainer.appendChild(createImageContainer(previewImageSrc, "Original"));
+      }
+
+      const correctedLabel = `Corrected ${selected}`;
+      if (outputMap[correctedLabel]) {
+        resultsContainer.appendChild(createImageContainer(outputMap[correctedLabel], correctedLabel));
       }
     }
 
@@ -206,6 +386,5 @@
       return container;
     }
   </script>
-
 </body>
 </html>
